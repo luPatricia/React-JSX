@@ -1,14 +1,29 @@
 
 import './App.css'
 
+// props é um OBJETO que guarda todas as propriedades
+// props.children guarda o contéudo que fica entre as tags de abertura e fechamento
+function TituloFormulario (props){
+  return (
+       <h2>
+          {props.children}
+       </h2>
+  )
+}
+
+
+
+
 function FormularioDeEvento (){
 
   return (
     <form className='form-evento'>
-         <h2>Preencha para criar um evento:</h2>
+          <TituloFormulario>
+            Preencha para criar um evento:
+          </TituloFormulario>
          <fieldset>
             <label htmlFor="nome">Qual é o nome do evento?</label>
-            <input type="text" id='nome'/>
+            <input type="text" id='nome' placeholder='Summer dev hits'/>
          </fieldset>
     </form>
   )
