@@ -11,6 +11,26 @@ function TituloFormulario (props){
   )
 }
 
+function CampoDeFormulario ({children}){
+  return (
+       <fieldset>
+           {children}
+       </fieldset>
+  )
+}
+
+function Label ({children, htmlFor}){
+  return (
+       <label htmlFor={htmlFor}>
+           {children}
+       </label>
+  )
+}
+
+
+function Input (props){
+  return <input {...props} />
+}
 
 
 
@@ -21,10 +41,10 @@ function FormularioDeEvento (){
           <TituloFormulario>
             Preencha para criar um evento:
           </TituloFormulario>
-         <fieldset>
-            <label htmlFor="nome">Qual é o nome do evento?</label>
-            <input type="text" id='nome' placeholder='Summer dev hits'/>
-         </fieldset>
+         <CampoDeFormulario>
+            <Label htmlFor="nome">Qual é o nome do evento?</Label>
+            <input type="text" id='nome' placeholder='Summer dev hits' name='nomeEvento'/>
+         </CampoDeFormulario>
     </form>
   )
 }
