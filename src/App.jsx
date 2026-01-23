@@ -10,6 +10,7 @@ import { SubHeading } from "./components/SubHeading"
 import { ToDoItem } from "./components/ToDoItem"
 import { ToDoList } from "./components/ToDoList"
 import { useState } from "react"
+import { TodoForm } from "./components/ToDoForm"
 
 
 
@@ -87,7 +88,7 @@ function App() {
           </ToDoList>
           <Footer>
             <Dialog isOpen={showDialog} onClose={toggleDialog}>
-                  <p>This modal dialog has a groovy backdrop!</p>
+                  <TodoForm/>
             </Dialog>
             <FabButton onClick={toggleDialog} >
               <IconPlus />
