@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { ChecklistsWrapper } from "./components/ChecklistsWrapper"
 import { Container } from "./components/Container"
 import { FabButton } from "./components/FabButton"
@@ -10,6 +9,8 @@ import { IconPlus, IconSchool } from "./components/icons"
 import { SubHeading } from "./components/SubHeading"
 import { ToDoItem } from "./components/ToDoItem"
 import { ToDoList } from "./components/ToDoList"
+import { useState } from "react"
+
 
 
 
@@ -56,6 +57,12 @@ const completed = [
 
 function App() {
 
+ const [showDialog, setShowDialog] = useState(false);
+
+ const toggleDialog = ()=>{
+  setShowDialog (!showDialog)
+  console.log('alternar modal!')
+ }
   return (
     <main>
       <Container>
@@ -65,7 +72,6 @@ function App() {
           </Heading>
         </Header>
 
-        <Dialog/>
         <ChecklistsWrapper>
           <SubHeading>Para estudar</SubHeading>
           <ToDoList>
@@ -80,121 +86,15 @@ function App() {
             })}
           </ToDoList>
           <Footer>
-            <FabButton>
+            <Dialog isOpen={showDialog} onClose={toggleDialog}>
+                  <p>This modal dialog has a groovy backdrop!</p>
+            </Dialog>
+            <FabButton onClick={toggleDialog} >
               <IconPlus />
             </FabButton>
           </Footer>
         </ChecklistsWrapper>
       </Container>
-=======
-
-import './App.css'
-import { Banner } from './componentes/Banner'
-import { FormularioDeEvento } from './componentes/FormularioDeEvento'
-import { Tema } from './componentes/Tema'
-import { CardEvento } from './componentes/CardEvento'
-import { useState } from 'react'
-
-
-function App() {
-
-
-  const temas = [
-    {
-      id: 1,
-      nome: 'front-end'
-    },
-
-    {
-      id: 2,
-      nome: 'back-end'
-    },
-
-    {
-      id: 3,
-      nome: 'devops'
-    },
-
-    {
-      id: 4,
-      nome: 'inteligência artificial'
-    },
-
-    {
-      id: 5,
-      nome: 'data science'
-    },
-
-    {
-      id: 6,
-      nome: 'cloud'
-    },
-
-
-  ]
-
-
-  const [eventos, setEventos] = useState ([
-     {
-       capa: 'https://raw.githubusercontent.com/viniciosneves/tecboard-assets/refs/heads/main/imagem_1.png',
-       tema: temas[0],
-       data: new Date(),
-       titulo: 'Mulheres no front'
-     }
-  ])
-
-  function adicionarEvento (evento){
-    setEventos([...eventos], evento)
-
-  }
-
-
-  return (
-    <main>
-      <header>
-        <img src="/logo.png" alt="" />
-      </header>
-
-      <Banner />
-
-      <FormularioDeEvento temas={temas} aoSubmeter ={adicionarEvento} />
-      
-      {temas.map(function(item){
-         return(
-          <section key={item.id}>
-           <Tema tema={item} />
-
-           {eventos.map(function (item, index){
-              <CardEvento evento={eventos} key={index}/>
-      })}
-           
-         </section>
-         )
-      })}
-
-      
-
-      {/* <section>
-        <Tema tema={temas[1]} />
-      </section>
-
-      <section>
-        <Tema tema={temas[2]} />
-      </section>
-
-      <section>
-        <Tema tema={temas[3]} />
-      </section>
-
-      <section>
-        <Tema tema={temas[4]} />
-      </section>
-
-      <section>
-        <Tema tema={temas[5]} />
-      </section> */}
-
->>>>>>> b4ade39ac779e0266f26f82048e6a6a6e464f331
     </main>
   )
 }
