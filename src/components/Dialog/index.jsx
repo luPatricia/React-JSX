@@ -20,8 +20,7 @@ export function Dialog({ isOpen, onClose, children }) {
     const dialogRef = useRef(null)
 
      useEffect(()=> {
-       console.log('Deveríamos mostrar o modal?', isOpen)
-
+    
        if(isOpen) {
           openDialog()
        } else {
@@ -50,10 +49,10 @@ export function Dialog({ isOpen, onClose, children }) {
                 </div>
                  
                 <div className="body">
-                       {children}
+                     {children}
                 </div>
 
-               
+                
             </dialog>
         </React.Fragment>
     )
