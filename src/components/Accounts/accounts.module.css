@@ -1,0 +1,15 @@
+
+.accounts { 
+display: flex; 
+flex-direction: column; 
+height: 100%; 
+} 
+
+.divider { 
+flex-grow: 1; 
+} 
+
+.actions { 
+display: flex; 
+justify-content: center; 
+} 
