@@ -6,6 +6,7 @@ import { IconChat } from "../icons/IconChat"
 import { IconButton } from "../IconButton"
 import { Link } from "react-router"
 
+
 export const CardPost = ({ post }) => {
     return (
         <article className={styles.card}>
@@ -20,7 +21,7 @@ export const CardPost = ({ post }) => {
             <section className={styles.body}>
                 <h2>{post.title}</h2>
                 <p>{post.body}</p>
-                <Link to="/blog-post">Ver detalhes</Link>
+                <Link to={`/blog-post/${post.slug}`}>Ver detalhes</Link>
             </section>
             <footer className={styles.footer}>
                 <div className={styles.actions}>

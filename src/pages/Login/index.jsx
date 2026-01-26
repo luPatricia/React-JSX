@@ -3,7 +3,6 @@ import { Checkbox } from "../../components/Checkbox"
 import { Input } from "../../components/Input"
 import { Label } from "../../components/Label"
 import Typography from "../../components/Typography"
-import { AuthLayout } from "../../layouts/Auth"
 import { Button } from "../../components/Button"
 import banner from './banner-login.png'
 import { IconArrowFoward } from "../../components/icons/IconArrowFoward"
@@ -38,7 +37,6 @@ const { login } = useAuth()
 
 
     return (
-        <AuthLayout>
             <AuthFormContainer bannerSrc={banner}>
                 <Typography variant="h1" color="--offwhite">Login</Typography>
                 <Typography variant="h2" color="--offwhite">Boas-vindas! Faça seu login.</Typography>
@@ -87,6 +85,5 @@ const { login } = useAuth()
                     </Link>
                 </footer>
             </AuthFormContainer>
-        </AuthLayout>
     )
 }
