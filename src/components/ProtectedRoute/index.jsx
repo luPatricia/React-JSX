@@ -22,7 +22,7 @@ export const ProtectedRoute = ({children}) =>{
      return <Spinner/>
   }
 
-  if(isAuthenticated){
+  if(!isAuthenticated){
     return null
   }
 
