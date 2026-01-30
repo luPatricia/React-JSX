@@ -22,7 +22,8 @@ export const ModalComment = ({ isEditing, onSuccess, postId }) => {
 
         try {
             setLoading(true)
-            http.post(`/comments/post/${postId}`, {
+            if(isEditing){
+               await http.patch(`/comments/post/${postId}`, {
                 text
             }, {
                 headers: {
@@ -30,10 +31,25 @@ export const ModalComment = ({ isEditing, onSuccess, postId }) => {
                 }
             })
                 .then((response) => {
-                    modalRef.current.closeModal()
-                    onSuccess(response.data)
+                    modalRef?.current?.closeModal()
+                    onSuccess(response?.data)
                     setLoading(false)
                 })
+
+            }else{
+                await http.post(`/comments/post/${postId}`, {
+                text
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+                .then((response) => {
+                    modalRef?.current?.closeModal()
+                    onSuccess(response?.data)
+                    setLoading(false)
+                })
+            }
 
         } catch (error) {
             console.error('Erro ao criar/atualizar comentário:', error)
@@ -44,7 +60,7 @@ export const ModalComment = ({ isEditing, onSuccess, postId }) => {
             <Modal ref={modalRef}>
                 <form action={onSubmit}>
                     <Subheading>{isEditing ? 'Editar comentário:' : 'Deixe seu comentário sobre o post:'}</Subheading>
-                    <Textarea required rows={8} name="text" placeholder="Digite aqui..." />
+                    <Textarea required rows={8} name="text" placeholder="Digite aqui..."  />
                     <div className={styles.footer}>
                         <Button disabled={loading} type="submit">
                             {loading ? <Spinner /> : <>
@@ -55,7 +71,7 @@ export const ModalComment = ({ isEditing, onSuccess, postId }) => {
                 </form>
             </Modal>
             <IconButton
-                onClick={() => modalRef.current.openModal()}
+                onClick={() => modalRef?.current?.openModal()}
             >
                 <IconChat fill={isEditing ? '#000' : '#888888'} />
             </IconButton>
