@@ -11,7 +11,7 @@ import { Button } from "../Button"
 import { http } from "../../Api"
 import { useAuth } from "../../hooks/useAuth"
 
-export const ModalComment = ({ isEditing, onSuccess, postId, defaultValue = "", commentId }) => {
+export const ModalComment = ({ isEditing, onSuccess = () => {}, postId, defaultValue = "", commentId }) => {
     const modalRef = useRef(null)
     const [loading, setLoading] = useState(false)
 
@@ -33,10 +33,11 @@ export const ModalComment = ({ isEditing, onSuccess, postId, defaultValue = "", 
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
-            })
-                .then((response) => {
+            }).then((response) => {
+                    console.log(response, "log do valor");
+                    
                     modalRef?.current?.closeModal()
-                    onSuccess(response.data)
+                    onSuccess(response?.data)
                     setLoading(false)
                 })
 
@@ -47,10 +48,10 @@ export const ModalComment = ({ isEditing, onSuccess, postId, defaultValue = "", 
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
-            })
-                .then((response) => {
+            }).then((response) => {
                     modalRef?.current?.closeModal()
-                    onSuccess(response.data)
+                    console.log(response, "log do valor");
+                    onSuccess(response?.data)
                     setLoading(false)
                 })
             }

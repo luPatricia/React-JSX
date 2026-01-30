@@ -5,15 +5,14 @@ import { useAuth } from '../../hooks/useAuth'
 import { useState } from 'react'
 
 export const Comment = ({ comment }) => {
-    const [text, setText] = useState(comment.text)
+    const [text, setText] = useState(comment?.text)
     const { user } = useAuth()
 
     const isOwner = user && (user.id == comment.author.id)
 
 
   const handleEdit = (newComment) =>{
-
-     setText(newComment.text)
+     setText(newComment?.text)
   }
 
 

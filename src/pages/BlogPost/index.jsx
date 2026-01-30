@@ -25,8 +25,8 @@ export const BlogPost = () => {
     useEffect(() => {
         http.get(`blog-posts/slug/${slug}`)
             .then(response => {
-                setPost(response.data)
-                setComments(response.data.comments)
+                setPost(response?.data)
+                setComments(response?.data?.comments)
 
             })
  
