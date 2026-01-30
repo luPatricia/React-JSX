@@ -5,24 +5,31 @@ import { ThumbsUpButton } from "./ThumbsUpButton"
 import { Link } from "react-router"
 import { ModalComment } from "../ModalComment"
 import { useState } from "react"
+import { http } from "../../Api"
 
 export const CardPost = ({ post }) => {
+  
     const [likes, setLikes] = useState(post.likes)
+    const [comments, setComments] = useState(post.comments)
+
+
+       const handleNewComment = (comment) =>{
+        setComments([comment, ...comments])
+       }
+
+
 
     const handleLinkButton = () => {
         const token = localStorage.getItem('access_token')
-
-        fetch(`http://localhost:3000/blog-posts/${post.id}/like`, {
-            method: 'POST',
+        http.post(`blog-posts/${post.id}/like`,{}, {
             headers: {
-                
+                 Authorization: `Bearer ${token}`
             }
         })
             .then(response => {
-                if (response.ok) {
                     setLikes(oldSate => oldSate + 1)
                     console.log('Incrementar like')
-                }
+                
             })
 
     }
@@ -52,9 +59,9 @@ export const CardPost = ({ post }) => {
                         </p>
                     </div>
                     <div className={styles.action}>
-                        <ModalComment />
+                        <ModalComment onSucess={handleNewComment} postId={post.id}/>
                         <p>
-                            {post.comments.length}
+                            {comments.length}
                         </p>
                     </div>
                 </div>
