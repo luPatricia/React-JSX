@@ -6,12 +6,14 @@ import { Link } from "react-router"
 import { ModalComment } from "../ModalComment"
 import { useState } from "react"
 import { http } from "../../Api"
+import { useAuth } from "../../hooks/useAuth"
 
 export const CardPost = ({ post }) => {
   
     const [likes, setLikes] = useState(post.likes)
     const [comments, setComments] = useState(post.comments)
 
+   const {isAuthenticated} = useAuth()
 
        const handleNewComment = (comment) =>{
         setComments([comment, ...comments])
@@ -20,13 +22,15 @@ export const CardPost = ({ post }) => {
 
 
     const handleLinkButton = () => {
+
         const token = localStorage.getItem('access_token')
+
         http.post(`blog-posts/${post.id}/like`,{}, {
             headers: {
                  Authorization: `Bearer ${token}`
             }
         })
-            .then(response => {
+            .then(() => {
                     setLikes(oldSate => oldSate + 1)
                     console.log('Incrementar like')
                 
@@ -53,7 +57,7 @@ export const CardPost = ({ post }) => {
             <footer className={styles.footer}>
                 <div className={styles.actions}>
                     <div className={styles.action}>
-                        <ThumbsUpButton loading={false} onClick={handleLinkButton} />
+                        <ThumbsUpButton loading={false} onClick={handleLinkButton} disabled={!isAuthenticated}/>
                         <p>
                             {likes}
                         </p>

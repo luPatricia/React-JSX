@@ -6,11 +6,11 @@ export const Modal = forwardRef(({ children }, ref) => {
     const dialogRef = useRef(null)
 
     const closeModal = () => {
-        dialogRef?.current?.close()
+        dialogRef.current.close()
     }
 
     const openModal = () => {
-        dialogRef?.current?.showModal()
+        dialogRef.current.showModal()
     }
 
     useImperativeHandle(ref, () => {

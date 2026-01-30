@@ -19,15 +19,15 @@ export const BlogPost = () => {
    
      const handleNewComment = (comment) =>{
         setComments([comment, ...comments])
-        setComments(response.data.comments)
        }
     
 
     useEffect(() => {
         http.get(`blog-posts/slug/${slug}`)
             .then(response => {
-                
                 setPost(response.data)
+                setComments(response.data.comments)
+
             })
  
             .catch(error => {

@@ -9,10 +9,14 @@ import { Spinner } from "../Spinner"
 import styles from './commentmodal.module.css'
 import { Button } from "../Button"
 import { http } from "../../Api"
+import { useAuth } from "../../hooks/useAuth"
 
-export const ModalComment = ({ isEditing, onSuccess, postId }) => {
+export const ModalComment = ({ isEditing, onSuccess, postId, defaultValue = "", commentId }) => {
     const modalRef = useRef(null)
     const [loading, setLoading] = useState(false)
+
+    const { isAuthenticated } = useAuth()
+
 
     const onSubmit = async (formData) => {
         const text = formData.get('text')
@@ -23,7 +27,7 @@ export const ModalComment = ({ isEditing, onSuccess, postId }) => {
         try {
             setLoading(true)
             if(isEditing){
-               await http.patch(`/comments/post/${postId}`, {
+                http.patch(`/comments/${commentId}`, {
                 text
             }, {
                 headers: {
@@ -32,12 +36,12 @@ export const ModalComment = ({ isEditing, onSuccess, postId }) => {
             })
                 .then((response) => {
                     modalRef?.current?.closeModal()
-                    onSuccess(response?.data)
+                    onSuccess(response.data)
                     setLoading(false)
                 })
 
             }else{
-                await http.post(`/comments/post/${postId}`, {
+                http.post(`/comments/post/${postId}`, {
                 text
             }, {
                 headers: {
@@ -46,7 +50,7 @@ export const ModalComment = ({ isEditing, onSuccess, postId }) => {
             })
                 .then((response) => {
                     modalRef?.current?.closeModal()
-                    onSuccess(response?.data)
+                    onSuccess(response.data)
                     setLoading(false)
                 })
             }
@@ -60,7 +64,7 @@ export const ModalComment = ({ isEditing, onSuccess, postId }) => {
             <Modal ref={modalRef}>
                 <form action={onSubmit}>
                     <Subheading>{isEditing ? 'Editar comentário:' : 'Deixe seu comentário sobre o post:'}</Subheading>
-                    <Textarea required rows={8} name="text" placeholder="Digite aqui..."  />
+                    <Textarea required rows={8} name="text" placeholder="Digite aqui..." defaultValue={defaultValue}  />
                     <div className={styles.footer}>
                         <Button disabled={loading} type="submit">
                             {loading ? <Spinner /> : <>
@@ -71,7 +75,8 @@ export const ModalComment = ({ isEditing, onSuccess, postId }) => {
                 </form>
             </Modal>
             <IconButton
-                onClick={() => modalRef?.current?.openModal()}
+                onClick={() => modalRef.current.openModal()}
+                disabled={!isAuthenticated}
             >
                 <IconChat fill={isEditing ? '#000' : '#888888'} />
             </IconButton>
