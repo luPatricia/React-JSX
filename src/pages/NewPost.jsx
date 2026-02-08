@@ -2,13 +2,74 @@ import Header from '../components/layout/Header'
 import Sidebar from '../components/layout/Sidebar'
 import BottomNavigation from '../components/layout/BottomNavigation'
 import NewPostForm from '../components/forms/NewPostForm'
+import { useMutation } from '@apollo/client/react'
+import { ADD_FEED_POST } from '../../database/graphql/mutation/feed'
+import { GET_FEED, GET_FEED_BY_CATEGORY } from '../../database/graphql/query/feed'
+import { cache } from 'react'
 
 function NewPost({ onNavigateToFeed }) {
-  const handleSubmit = (formData) => {
-    console.log('Nova postagem:', formData)
-    // Aqui seria onde salvaria os dados no backend
-    // Por enquanto, só navega de volta ao feed
-    onNavigateToFeed?.()
+  const [addFeedPost, { loading: savingPost }] = useMutation(ADD_FEED_POST, {
+    refetchQueries: [{ query: GET_FEED}, {query: GET_FEED_BY_CATEGORY}],
+    update: (cache, { data: {createFeed} }) => {
+        try{
+           const existingFeed = cache.readQuery( {query: GET_FEED} );
+           if(existingFeed){
+              cache.writeQuery({
+                query: GET_FEED,
+                data: {
+                  feed: [createFeed, ...existingFeed.feed],
+                },
+              });
+           }
+        }catch(error){
+          console.log('Cache update error: ', error);
+        }
+
+        try{
+            const existingCategoryFeed = cache.readQuery({
+              query: GET_FEED_BY_CATEGORY,
+              variables: { category: createFeed.category }
+            });
+
+            if(existingCategoryFeed){
+              cache.writeQuery({
+                query: GET_FEED_BY_CATEGORY,
+                variables: {category: createFeed.category},
+                data: {
+                  feedByCategory: [createFeed, ...existingCategoryFeed.feedByCategory]
+                },
+              });
+            }
+        }catch (error){
+          console.log('Category cache update error: ', error);
+        }
+    },
+  });
+  const handleSubmit = async (formData) => {
+      try{
+        const formParam = {
+          user:{
+            id: 1,
+            name: 'Pedro Mello'
+          },
+          time: parseInt(formData.tempo) * 60,
+          stats: {
+             distance: formData.distancia + 'KM',
+             calories: formData.calorias,
+             heartRate: formData.bpm + 'BPM'
+          },
+           category: formData.tipoTreino,
+           description: formData.descricao,
+           timestamp: new Date().toISOString()
+
+        };
+
+        await addFeedPost( {variables: formParam} );
+        onNavigateToFeed?.();
+      }catch (error) {
+          console.log('Erro ao salvar treino:', error);
+      }
+    
   }
 
   const handleCancel = () => {
@@ -29,6 +90,7 @@ function NewPost({ onNavigateToFeed }) {
             <NewPostForm 
               onSubmit={handleSubmit}
               onCancel={handleCancel}
+              loading={savingPost}
             />
           </div>
         </main>
